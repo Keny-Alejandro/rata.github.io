@@ -10,12 +10,12 @@
 </head>
 
 <body>
-
     <div class="title">PRUEBA DE SALIDA</div>
     <br>
 
     <div id="output" style="text-align: center; color: green; font-weight: bold; font-size: 50px;">
 
+        <p id="mensaje" style="text-align: center; color: green; font-weight: bold; font-size: 50px;"></p>
         <script>
             // Obtén la id del LocalStorage
             const id = localStorage.getItem("id");
@@ -25,31 +25,41 @@
 
             // Realiza la solicitud GET a la API
             fetch(apiUrl)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error en la solicitud");
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    const OutputElement = document.getElementById("output");
+                    const outputElement = document.getElementById("output");
+                    const mensajeElemento = document.getElementById('mensaje');
 
-                    // Formatear las medallas sin comillas
-                    const comparacionMedal = data.comparationMedal.replace(/"/g, "");
-                    const identificationMedal = data.identificationMedal.replace(/"/g, "");
-                    OutputElement.innerHTML += `<br> Medalla de Comparación: ${comparacionMedal}`;
-                    OutputElement.innerHTML += `<br> Medalla de Identificación: ${identificationMedal}`;
-                    OutputElement.innerHTML += "<br><br> DATOS <br><br>";
+                    if (Object.keys(data).length === 0 || Object.keys(data.result).length === 0) {
+                        mensajeElemento.textContent = 'Prueba de Salida No Encontrada';
+                    } else {
+                        const comparacionMedal = data.comparationMedal ? data.comparationMedal.replace(/"/g, "") : "";
+                        const identificationMedal = data.identificationMedal ? data.identificationMedal.replace(/"/g, "") : "";
+                        outputElement.innerHTML += `<br> Medalla de Comparación: ${comparacionMedal}`;
+                        outputElement.innerHTML += `<br> Medalla de Identificación: ${identificationMedal}`;
+                        outputElement.innerHTML += "<br><br> DATOS <br><br>";
 
-                    // Formatear los datos
-                    for (const key in data.result) {
-                        if (data.result.hasOwnProperty(key)) {
-                            const item = data.result[key];
-                            OutputElement.innerHTML += `<b>${key}</b><br>`;
-                            OutputElement.innerHTML += `Valor Identificación: ${item.identificationValue}<br>`;
-                            OutputElement.innerHTML += `Puntaje Identificación: ${item.identificationScore}<br>`;
-                            OutputElement.innerHTML += `Valor Comparación: ${item.comparationValue}<br>`;
-                            OutputElement.innerHTML += `Puntaje Comparación: ${item.comparationScore}<br>`;
-                            OutputElement.innerHTML += "<br>";
+                        for (const key in data.result) {
+                            if (data.result.hasOwnProperty(key)) {
+                                const item = data.result[key];
+                                outputElement.innerHTML += `<b>${key}</b><br>`;
+                                outputElement.innerHTML += `Valor Identificación: ${item.identificationValue}<br>`;
+                                outputElement.innerHTML += `Puntaje Identificación: ${item.identificationScore}<br>`;
+                                outputElement.innerHTML += `Valor Comparación: ${item.comparationValue}<br>`;
+                                outputElement.innerHTML += `Puntaje Comparación: ${item.comparationScore}<br>`;
+                                outputElement.innerHTML += "<br>";
+                            }
                         }
                     }
                 })
                 .catch(error => {
+                    const mensajeElemento = document.getElementById('mensaje');
+                    mensajeElemento.textContent = 'Prueba de Salida No Encontrada';
                     console.error("Error al obtener los datos:", error);
                 });
         </script>

@@ -41,6 +41,14 @@ body {
     background-color: #ff00cc;
     color: white;
     font-weight: bold;
+    cursor: pointer; /* Cambia el cursor a una mano */
+}
+
+/* Agrega un estilo para el espacio entre los botones */
+.options .space-between-buttons {
+    margin: 26px;
+    padding: 5px;
+    cursor: auto; /* Mantiene el cursor predeterminado */
 }
 
 .formulario {

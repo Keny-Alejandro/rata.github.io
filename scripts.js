@@ -22,9 +22,12 @@ function login(event) {
             localStorage.setItem('id', result.id);
             localStorage.setItem('token', result.token);
 
-            console.log(result);
             if (result.message === "Autenticación correcta") {
                 window.location.href = 'index.html';
+            }
+            else {
+                const mensajeElemento = document.getElementById('mensaje');
+                mensajeElemento.textContent = 'Error de Usuario y/o Contraseña';
             }
 
         })

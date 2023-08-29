@@ -15,36 +15,44 @@
     <br>
 
     <div id="resultado" style="text-align: center; color: green; font-weight: bold; font-size: 50px;">
-
+        <p id="mensaje" style="text-align: center; color: green; font-weight: bold; font-size: 50px;"></p>
         <script>
             // Obtén la id del LocalStorage
             const id = localStorage.getItem("id");
-    
+
             // URL de la API con la id insertada
             const apiUrl = `https://api.selecu.net/products/blogs/${id}`;
-    
+
             // Realiza la solicitud GET a la API
             fetch(apiUrl)
                 .then(response => response.json())
                 .then(data => {
                     const resultadoElement = document.getElementById("resultado");
-    
-                    // Inicializar el contador para los IDs
-                    let counter = 1;
-    
-                    // Formatea y muestra los datos
-                    let formattedText = "";
-                    data.forEach(bitacora => {
-                        formattedText += `Bitácora ${counter}: ${bitacora.description}<br>`;
-                        counter++;
-                    });
-    
-                    resultadoElement.innerHTML = formattedText;
+
+                    if (data.length === 0) {
+                        const mensajeElemento = document.getElementById('mensaje');
+                        mensajeElemento.textContent = 'Bitácora No Encontrada';
+                    } else {
+                        // Inicializar el contador para los IDs
+                        let counter = 1;
+
+                        // Formatea y muestra los datos
+                        let formattedText = "";
+                        data.forEach(bitacora => {
+                            formattedText += `Bitácora ${counter}: ${bitacora.description}<br>`;
+                            counter++;
+                        });
+
+                        resultadoElement.innerHTML = formattedText;
+                    }
                 })
                 .catch(error => {
+                    const mensajeElemento = document.getElementById('mensaje');
+                    mensajeElemento.textContent = 'Bitácora No Encontrada';
                     console.error("Error al obtener los datos:", error);
                 });
         </script>
+
     </div>
 </body>
 
