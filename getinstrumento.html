@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es-419" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍓🐭</title>
+    <link rel="icon" type="image/jpg" href="./icon.jpg" />
+    <link rel="stylesheet" href="./estilos.css">
+</head>
+
+<body>
+
+    <div class="title">OBTENER INSTRUMENTO</div>
+    <br>
+
+    <div id="instrumento" style="text-align: center; color: green; font-weight: bold; font-size: 50px;">
+
+        <form id="formulario" class="formulario" method="POST">
+            <input type="number" id="instrument" name="instrument" placeholder="Instrumento" required><br><br>
+            <input style="font-weight: bold; font-size: 19px;" id="boton" name="boton" type="submit"
+                value="HACERLO REAL">
+        </form>
+
+        <script>
+            // Obtén el id y el token del LocalStorage
+            const id = localStorage.getItem("id");
+            const token = localStorage.getItem("token");
+
+            document.getElementById('formulario').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Datos para la solicitud a la API
+                const instrument = parseInt(document.getElementById('instrument').value, 10);
+
+                // Construye los datos a enviar en la solicitud
+                const data = {
+                    userId: id,
+                    instrument: instrument
+                };
+
+                // Configura los headers de la solicitud
+                const headers = {
+                    "access-token": token,
+                    "Content-Type": "application/json"
+                };
+
+                // Realiza la solicitud a la API usando el método PATCH
+                fetch('https://api.selecu.net/products/mec/getValue', {
+                    method: "PATCH",
+                    headers: headers,
+                    body: JSON.stringify(data)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const instrumentoElement = document.getElementById("instrumento");
+
+                        // Accede al campo "value" y formatea los valores
+                        const valueArray = JSON.parse(data.value);
+                        let formattedValue = "";
+
+                        for (const entry of valueArray) {
+                            formattedValue += "| Parte: " + entry.part + " | Valor: " + entry.value + " |<br>";
+                        }
+
+                        instrumentoElement.innerHTML = formattedValue;
+
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener los datos:", error);
+                    });
+            });
+        </script>
+    </div>
+</body>
+
+</html>

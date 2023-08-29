@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es-419" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍓🐭</title>
+    <link rel="icon" type="image/jpg" href="./icon.jpg" />
+    <link rel="stylesheet" href="./estilos.css">
+</head>
+
+<body>
+
+    <div class="title">VER CHECKPOINT</div>
+    <br>
+
+    <div id="checkpointData" style="text-align: center; color: green; font-weight: bold; font-size: 50px;">
+        <script>
+            // Obtén el id y el token del LocalStorage
+            const id = localStorage.getItem("id");
+            const token = localStorage.getItem("token");
+
+            // Datos para la solicitud a la API
+            const apiUrl = "https://api.selecu.net/api-selecu/checkpoint-data/get";
+            const product = "PIHE";
+
+            // Construye los datos a enviar en la solicitud
+            const data = {
+                userId: id,
+                product: product
+            };
+
+            // Configura los headers de la solicitud
+            const headers = {
+                "access-token": token,
+                "Content-Type": "application/json"
+            };
+
+            // Realiza la solicitud a la API usando el método PATCH
+            fetch(apiUrl, {
+                method: "PATCH",
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar los datos en el elemento 'checkpointData'
+                    const checkpointDataElement = document.getElementById("checkpointData");
+                    checkpointDataElement.innerHTML += "  <br><br><br> Capítulo: " + JSON.stringify(data.data.currentChapter, null, 2);
+                    checkpointDataElement.innerHTML += " <br> Checkpoint: " + JSON.stringify(data.data.currentCheckpoint, null, 2);
+                })
+                .catch(error => {
+                    console.error("Error al obtener los datos:", error);
+                });
+        </script>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+@font-face {
+    font-family: "Ebrima";
+    src: url(./font/ebrima.ttf) format("truetype");
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Ebrima", Arial, sans-serif;
+    background-image: url(./fondo.jpg);
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    color: #ffffff;
+    overflow-y: auto;
+}
+
+.title {
+    text-align: center;
+    font-family: "Ebrima", Arial, sans-serif;
+    justify-content: center;
+    color: #ff00cc;
+    font-weight: bold;
+    font-size: 50px;
+    padding-top: 10px;
+}
+
+.options {
+    font-family: "Ebrima", Arial, sans-serif;
+    text-align: center;
+    justify-content: center;
+    display: grid;
+}
+
+.options button {
+    font-family: "Ebrima", Arial, sans-serif;
+    margin: 26px;
+    padding: 5px;
+    background-color: #ff00cc;
+    color: white;
+    font-weight: bold;
+}
+
+.formulario {
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    font-family: "Ebrima", Arial, sans-serif;
+    margin: 26px;
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.formulario input[type="submit"] {
+    background-color: yellow;
+}

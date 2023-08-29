@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es-419" dir="ltr">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍓🐭</title>
+    <link rel="icon" type="image/jpg" href="./icon.jpg" />
+    <link rel="stylesheet" href="./estilos.css">
+</head>
+
+<body>
+
+    <div class="title">ACTUALIZAR CHECKPOINT</div>
+    <br>
+
+    <div id="checkpointData" style="text-align: center; color: green; font-weight: bold; font-size: 50px;">
+
+        <form id="formulario" class="formulario" method="POST">
+            <input type="number" id="capitulo" name="capitulo" placeholder="Nuevo Capitulo" required><br>
+            <input type="number" id="check" name="check" placeholder="Nuevo Checkpoint" required><br><br>
+            <input style="font-weight: bold; font-size: 19px;" id="boton" name="boton" type="submit" value="HACERLO REAL">
+        </form>
+
+        <p id="mensaje"></p>
+
+        <script>
+            document.getElementById('formulario').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const token = localStorage.getItem("token");
+                const id = localStorage.getItem("id");
+                const product = "PIHE";
+                const capitulo = parseInt(document.getElementById('capitulo').value, 10);
+                const check = parseInt(document.getElementById('check').value, 10);
+
+                const requestData = {
+                    userId: id,
+                    product: product,
+                    data: {
+                        currentChapter: capitulo,
+                        currentCheckpoint: check
+                    }
+                };
+
+                fetch('https://api.selecu.net/api-selecu/checkpoint-data/update', {
+                    method: 'PUT',
+                    headers: {
+                        "access-token": token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const mensajeElemento = document.getElementById('mensaje');
+                        if (data.Status === "Ok") {
+                            mensajeElemento.textContent = 'Checkpoint Actualizado';
+                            console.log("Yo me compré un 47");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al hacer la solicitud:', error);
+                    });
+            });
+        </script>
+
+    </div>
+
+</body>
+
+</html>
