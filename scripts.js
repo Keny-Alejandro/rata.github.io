@@ -23,7 +23,7 @@ function login(event) {
             localStorage.setItem('token', result.token);
 
             if (result.message === "Autenticación correcta") {
-                window.location.href = 'index.html';
+                abrirEnNuevaPestana();
             }
             else {
                 const mensajeElemento = document.getElementById('mensaje');
@@ -37,3 +37,7 @@ function login(event) {
 }
 
 document.getElementById('formulario').addEventListener('submit', login);
+
+function abrirEnNuevaPestana() {
+    window.open('indexInd.html', '_blank');
+}
